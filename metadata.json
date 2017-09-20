@@ -11,6 +11,6 @@
     {"name": "puppetlabs/firewall"},
     {"name": "puppetlabs/postgresql"},
     {"name": "puppet/rabbitmq"},
-    {"name": "puppetlabs/vcsrepo"},
+    {"name": "puppetlabs/vcsrepo"}
   ]
 }
