@@ -1,0 +1,16 @@
+{
+  "name": "incollisionwith",
+  "version": "0.1.0",
+  "license": "BSD-3-Clause",
+  "author": "In Collision With <hello@incollisionwith.co.uk>",
+  "source": "https://github.com/incollisionwith/incollisionwith-puppet",
+  "project_page": "https://github.com/incollisionwith",
+  "dependencies": [
+    {"name": "puppetlabs/apache"},
+    {"name": "puppetlabs/concat"},
+    {"name": "puppetlabs/firewall"},
+    {"name": "puppetlabs/postgresql"},
+    {"name": "puppet/rabbitmq"},
+    {"name": "puppetlabs/vcsrepo"},
+  ]
+}

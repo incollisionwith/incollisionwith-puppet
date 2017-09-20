@@ -1,0 +1,14 @@
+[Unit]
+Description=Flower Service for <%= @user %>
+After=network-online.target
+
+[Service]
+Type=simple
+User=<%= @user %>
+Group=<%= @user %>
+EnvironmentFile=<%= @env_file %>
+WorkingDirectory=<%= @home %>
+ExecStart=<%= @venv %>/bin/flower -A <%= @app_package %> --port=<%= @flower_port %> --url-prefix=flower
+
+[Install]
+WantedBy=multi-user.target

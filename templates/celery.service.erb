@@ -1,0 +1,21 @@
+[Unit]
+Description=Celery Service for <%= @user %>
+After=network-online.target
+
+[Service]
+Type=forking
+User=<%= @user %>
+Group=<%= @user %>
+EnvironmentFile=<%= @env_file %>
+WorkingDirectory=<%= @home %>
+ExecStart=/bin/sh -c '<%= @venv %>/bin/celery multi start ${CELERYD_NODES} \
+  -A <%= @app_package %> -B --pidfile=${CELERYD_PID_FILE} \
+  --logfile=${CELERYD_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL} ${CELERYD_OPTS}'
+ExecStop=/bin/sh -c '<%= @venv %>/bin/celery multi stopwait ${CELERYD_NODES} \
+  --pidfile=${CELERYD_PID_FILE}'
+ExecReload=/bin/sh -c '<%= @venv %>/bin/celery multi restart ${CELERYD_NODES} \
+  -A <%= @app_package %> -B --pidfile=${CELERYD_PID_FILE} \
+  --logfile=${CELERYD_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL} ${CELERYD_OPTS}'
+
+[Install]
+WantedBy=multi-user.target
