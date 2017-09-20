@@ -150,13 +150,6 @@ define incollisionwith::app (
       user    => $user,
       require => Exec["${name}-migrate"],
       before => Anchor["${name}-ready"];
-    "${name}-load-fixture":
-      command   => "$manage_py loaddata $fixture",
-      user      => $user,
-      require   => Exec["${name}-migrate"],
-      subscribe => File[$fixture],
-      refreshonly => true,
-      before => Anchor["${name}-ready"];
   }
 
   file {
