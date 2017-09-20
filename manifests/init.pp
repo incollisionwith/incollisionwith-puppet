@@ -22,7 +22,7 @@ class incollisionwith (
 
   incollisionwith::app {
     incollisionwith:
-      app_package => "incollisionwith",
+      app_package => "icw",
       vcs_url => "https://github.com/incollisionwith/incollisionwith",
       server_name => hiera('incollisionwith::server_name'),
       flower_port => 5555;
