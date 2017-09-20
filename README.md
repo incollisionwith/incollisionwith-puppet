@@ -28,15 +28,15 @@ This puppet module uses hiera to provide deployment-specific configuration data.
 `/etc/puppet/code/hiera/common.yaml` to contain:
 
 ```yaml
-incollisionwith::secret_key: [secret]
-incollisionwith::amqp_password: [secret]
+icw::secret_key: [secret]
+icw::amqp_password: [secret]
 
 # Firewall rules
 firewall::allow_ssh_from: ['163.1.124.0/23', '129.67.100.0/22']
 firewall::allow_http_from: ['163.1.0.0/16', '129.67.0.0/16']
 
 
-incollisionwith::server_name: incollisionwith.uk
+icw::server_name: incollisionwith.uk
 ```
 
 You'll want to replace each `[secret]` with a randomly-generated secret (using e.g. `pwgen 32`). You can do this with the following script:
