@@ -9,6 +9,7 @@ class incollisionwith (
     "libxml2-dev",
     "libxmlsec1-dev",
     "bison",
+    "libgdal20",
   ]
 
   include postgresql::server
@@ -21,7 +22,7 @@ class incollisionwith (
   include incollisionwith::web
 
   incollisionwith::app {
-    incollisionwith:
+    icw:
       app_package => "icw",
       vcs_url => "https://github.com/incollisionwith/incollisionwith",
       server_name => hiera('incollisionwith::server_name'),
