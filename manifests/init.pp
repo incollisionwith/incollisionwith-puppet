@@ -10,6 +10,7 @@ class incollisionwith (
     "libxmlsec1-dev",
     "bison",
     "libgdal20",
+    "postgis",
   ]
 
   include postgresql::server
@@ -19,6 +20,7 @@ class incollisionwith (
   }
   include incollisionwith::broker
   include incollisionwith::firewall
+  include incollisionwith::letsencrypt
   include incollisionwith::web
 
   incollisionwith::app {

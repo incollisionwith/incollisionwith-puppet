@@ -9,6 +9,7 @@ define incollisionwith::app (
   $user = "${name}"
   $repo = "${home}/repo"
   $venv = "${home}/venv"
+  $docroot = "${home}/docroot"
   $wsgi = "${home}/app.wsgi"
   $static_root = "${home}/static"
   $manage_py = "${home}/manage.py"
@@ -19,7 +20,26 @@ define incollisionwith::app (
   $systemd_celery_service = "/etc/systemd/system/$name-celery.service"
   $systemd_flower_service = "/etc/systemd/system/$name-flower.service"
 
+  $ssl_cert = "/etc/letsencrypt/live/${server_name}/cert.pem"
+  $ssl_key = "/etc/letsencrypt/live/${server_name}/privkey.pem"
+
   $fixture = "$home/fixture.yaml"
+
+  # Let's Encrypt
+  $get_cert_initial = "/usr/bin/letsencrypt certonly --standalone -d ${server_name}"
+  $get_cert_renew = "/usr/bin/letsencrypt certonly --webroot -w ${docroot} -d ${server_name}"
+  exec { "letsencrypt-initial":
+    command => $get_cert_initial,
+    creates => $ssl_cert,
+    before => Apache::Vhost["${name}-ssl"];
+  }
+  cron { "letsencrypt-renew":
+    command => $get_cert_renew,
+    minute => 45,
+    hour => 9,
+    day => 5,
+    month => "*/2";
+  }
 
   # Principal names
   $client_principal_name = "api/$server_name"
@@ -82,16 +102,16 @@ define incollisionwith::app (
     "${name}-non-ssl":
       servername => $server_name,
       port => 80,
-      docroot => "$home/docroot",
+      docroot => "$docroot",
       redirect_status => 'permanent',
       redirect_dest   => "https://${server_name}/";
     "${name}-ssl":
       servername => $server_name,
       port => 443,
-      docroot => "$home/docroot",
+      docroot => "$docroot",
       ssl => true,
-#      ssl_cert => $incollisionwith::web::ssl_cert,
-#      ssl_key => $incollisionwith::web::ssl_key,
+      ssl_cert => $ssl_cert,
+      ssl_key => "$ssl_key,
       wsgi_daemon_process => $name,
       wsgi_daemon_process_options => {
         processes => '2',
@@ -103,7 +123,10 @@ define incollisionwith::app (
       },
       wsgi_process_group => $name,
       wsgi_script_aliases  => { '/' => $wsgi },
-      aliases => [ { alias => '/static', path => $static_root } ],
+      aliases => [
+        { alias => '/static', path => $static_root },
+        ( alias => '/.well-known/acme-challenge', path => '${docroot}/.well-known/acme-challenge' },
+      ],
       directories => [
         { path => $static_root, require => "all granted" },
       ],
@@ -194,4 +217,5 @@ define incollisionwith::app (
 
   postgresql::server::role { $user:
   }
+
 }
