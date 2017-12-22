@@ -37,7 +37,7 @@ define incollisionwith::app (
     command => $get_cert_renew,
     minute => 45,
     hour => 9,
-    day => 5,
+    monthday => 5,
     month => "*/2";
   }
 
