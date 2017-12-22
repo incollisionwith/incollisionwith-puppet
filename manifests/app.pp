@@ -111,7 +111,7 @@ define incollisionwith::app (
       docroot => "$docroot",
       ssl => true,
       ssl_cert => $ssl_cert,
-      ssl_key => "$ssl_key,
+      ssl_key => $ssl_key,
       wsgi_daemon_process => $name,
       wsgi_daemon_process_options => {
         processes => '2',
