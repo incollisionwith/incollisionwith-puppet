@@ -125,10 +125,11 @@ define incollisionwith::app (
       wsgi_script_aliases  => { '/' => $wsgi },
       aliases => [
         { alias => '/static', path => $static_root },
-        ( alias => '/.well-known/acme-challenge', path => '${docroot}/.well-known/acme-challenge' },
+        { alias => '/.well-known/acme-challenge', path => "$docroot/.well-known/acme-challenge" },
       ],
       directories => [
-        { path => $static_root, require => "all granted" },
+        { path => $static_root },
+        { path => $docroot },
       ],
       proxy_pass => [
         { path => '/flower/', url => "http://localhost:$flower_port/"}
