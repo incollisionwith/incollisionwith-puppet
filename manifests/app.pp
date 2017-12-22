@@ -22,6 +22,7 @@ define incollisionwith::app (
 
   $ssl_cert = "/etc/letsencrypt/live/${server_name}/cert.pem"
   $ssl_key = "/etc/letsencrypt/live/${server_name}/privkey.pem"
+  $ssl_chain = "/etc/letsencrypt/live/${server_name}/chain.pem"
 
   $fixture = "$home/fixture.yaml"
 
@@ -33,13 +34,13 @@ define incollisionwith::app (
     creates => $ssl_cert,
     before => Apache::Vhost["${name}-ssl"];
   }
-  cron { "letsencrypt-renew":
-    command => $get_cert_renew,
-    minute => 45,
-    hour => 9,
-    monthday => 5,
-    month => "*/2";
-  }
+  # cron { "letsencrypt-renew":
+  #   command => $get_cert_renew,
+  #   minute => 45,
+  #   hour => 9,
+  #   monthday => 5,
+  #   month => "*/2";
+  # }
 
   # Principal names
   $client_principal_name = "api/$server_name"
@@ -112,6 +113,7 @@ define incollisionwith::app (
       ssl => true,
       ssl_cert => $ssl_cert,
       ssl_key => $ssl_key,
+      ssl_chain => $ssl_chain,
       wsgi_daemon_process => $name,
       wsgi_daemon_process_options => {
         processes => '2',
