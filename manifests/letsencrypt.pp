@@ -1,3 +1,3 @@
 class incollisionwith::letsencrypt {
-  package { "letsencrypt": require => installed }
+  package { "letsencrypt": ensure => installed }
 }
